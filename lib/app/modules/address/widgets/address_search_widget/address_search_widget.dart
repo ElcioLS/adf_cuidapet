@@ -1,13 +1,32 @@
-part of '../address_page.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+part of '../../address_page.dart';
+
+typedef AddressSelectedCallback = void Function(PlaceModel);
 
 class _AddressSearchWidget extends StatefulWidget {
-  const _AddressSearchWidget({Key? key}) : super(key: key);
+  final AddressSelectedCallback addressSelectedCallback;
+
+  const _AddressSearchWidget({
+    required this.addressSelectedCallback,
+  });
 
   @override
   State<_AddressSearchWidget> createState() => _AddressSearchWidgetState();
 }
 
 class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
+  final searchTextEC = TextEditingController();
+  final searchTextFN = FocusNode();
+
+  final controller = Modular.get<AddressSearchController>();
+
+  @override
+  void dispose() {
+    searchTextEC.dispose();
+    searchTextFN.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final border = OutlineInputBorder(
@@ -20,6 +39,8 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
       borderRadius: BorderRadius.circular(20),
       child: TypeAheadField<PlaceModel>(
         textFieldConfiguration: TextFieldConfiguration(
+          controller: searchTextEC,
+          focusNode: searchTextFN,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.location_on),
             hintText: 'Insira um endereço',
@@ -34,23 +55,22 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
           );
         },
         onSuggestionSelected: _onSuggestionSelected,
-        suggestionsCallback: _onSuggestionCallback,
+        suggestionsCallback: _suggestionCallback,
       ),
     );
   }
 
-  FutureOr<Iterable<PlaceModel>> _onSuggestionCallback(String pattern) {
-    debugPrint('endereço digitado $pattern ');
+  Future<List<PlaceModel>> _suggestionCallback(String pattern) async {
+    if (pattern.isNotEmpty) {
+      return controller.searchAddress(pattern);
+    }
 
-    return [
-      PlaceModel(address: 'Av Paulista, 200', lat: 123.0, lng: 12154.0),
-      PlaceModel(address: 'Av Paulista, 500', lat: 123.0, lng: 12154.0),
-      PlaceModel(address: 'Av Paulista, 1500', lat: 123.0, lng: 12154.0),
-    ];
+    return <PlaceModel>[];
   }
 
   void _onSuggestionSelected(PlaceModel suggestion) {
-    print(suggestion);
+    searchTextEC.text = suggestion.address;
+    widget.addressSelectedCallback(suggestion);
   }
 }
 
@@ -62,7 +82,7 @@ class _ItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.location_on),
+      leading: const Icon(Icons.location_on),
       title: Text(address),
     );
   }
