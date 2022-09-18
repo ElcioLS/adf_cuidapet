@@ -28,7 +28,7 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
             onPressed: () {
               FirebaseAuth.instance.signOut();
             },
-            child: Center(child: Text('logout')),
+            child: const Center(child: Text('logout')),
           ),
           TextButton(
             onPressed: () async {
@@ -36,9 +36,9 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
                   .auth()
                   .get('/categories/'); //teste acessar categorias
 
-              print(categoriesResponse.data);
+              debugPrint(categoriesResponse.data);
             },
-            child: Center(child: Text('Teste Refresh Token')),
+            child: const Center(child: Text('Teste Refresh Token')),
           ),
         ],
       ),
