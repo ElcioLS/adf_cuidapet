@@ -32,6 +32,10 @@ dependencies:
   flutter_facebook_auth: 4.3.4
   flutter_typeahead: 4.1.1
   google_place: ^0.4.7
+  google_maps_flutter: 2.1.8
+  # google_maps_flutter: ^2.2.0
+
+
 
 dev_dependencies:
   flutter_test:
