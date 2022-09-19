@@ -33,8 +33,12 @@ dependencies:
   flutter_typeahead: 4.1.1
   google_place: ^0.4.7
   google_maps_flutter: 2.1.8
-  # google_maps_flutter: ^2.2.0
 
+  # -------SQLITE-------
+  sqflite: 2.0.2+1
+  synchronized: 3.0.0+2
+  path: 1.8.2
+  # -------SQLITE-------
 
 
 dev_dependencies:
