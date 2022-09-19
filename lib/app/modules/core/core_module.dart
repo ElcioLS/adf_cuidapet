@@ -31,7 +31,8 @@ class CoreModule extends Module {
             log: i(),
             authStore: i()),
         export: true),
-    Bind.lazySingleton<AddressRepository>((i) => AddressRepositoryImpl(),
+    Bind.lazySingleton<AddressRepository>(
+        (i) => AddressRepositoryImpl(sqliteConnectionFactory: i()),
         export: true),
     Bind.lazySingleton<AddressService>(
         (i) => AddressServiceImpl(addressRepository: i()),
