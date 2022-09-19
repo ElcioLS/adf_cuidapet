@@ -42,7 +42,10 @@ class _AddressPageState extends State<AddressPage> {
               const SizedBox(height: 20),
               _AddressSearchWidget(
                 addressSelectedCallback: (place) {
-                  print(place);
+                  Modular.to.pushNamed(
+                    '/address/detail/',
+                    arguments: place,
+                  );
                 },
               ),
               const SizedBox(height: 30),
@@ -66,13 +69,6 @@ class _AddressPageState extends State<AddressPage> {
               const SizedBox(height: 20),
               Column(
                 children: const [
-                  _AddressItem(),
-                  _AddressItem(),
-                  _AddressItem(),
-                  _AddressItem(),
-                  _AddressItem(),
-                  _AddressItem(),
-                  _AddressItem(),
                   _AddressItem(),
                   _AddressItem(),
                 ],
