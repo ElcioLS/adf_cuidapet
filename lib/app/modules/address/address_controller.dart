@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:adf_cuidapet/app/core/life_cycle/controller_life_cycle.dart';
 import 'package:adf_cuidapet/app/core/ui/widgets/loader.dart';
+import 'package:adf_cuidapet/app/core/ui/widgets/messages.dart';
 import 'package:adf_cuidapet/app/entities/address_entity.dart';
 import 'package:adf_cuidapet/app/models/place_model.dart';
 import 'package:adf_cuidapet/app/services/address/address_service.dart';
@@ -104,5 +105,16 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
   Future<void> selectAddress(AddressEntity addressEntity) async {
     await _addressService.selectAddress(addressEntity);
     Modular.to.pop(addressEntity);
+  }
+
+  Future<bool> addressWasSelected() async {
+    final address = await _addressService.getAddressSelected();
+
+    if (address != null) {
+      return true;
+    } else {
+      Messages.alert('Por favor selecione ou cadastre um endereço');
+      return false;
+    }
   }
 }
