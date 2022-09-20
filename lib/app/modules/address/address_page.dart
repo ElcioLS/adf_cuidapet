@@ -33,21 +33,20 @@ class _AddressPageState
     super.initState();
 
     final reactionService =
-        reaction<Observable<bool>>((_) => controller.locationServiceUnavailable,
+        reaction<bool>((_) => controller.locationServiceUnavailable,
             (locationServiceUnavailable) {
-      if (locationServiceUnavailable.value) {
+      if (locationServiceUnavailable) {
         showDialogLocationServiceUnavailable();
       }
     });
 
-    final reactionLocationPermission =
-        reaction<Observable<LocationPermission>?>(
-            (_) => controller.locationPermission, (locationpermission) {
+    final reactionLocationPermission = reaction<LocationPermission?>(
+        (_) => controller.locationPermission, (locationpermission) {
       if (locationpermission != null &&
-          locationpermission.value == LocationPermission.denied) {
+          locationpermission == LocationPermission.denied) {
         showDialogLocationDenied(tryAgain: () => controller.myLocation());
       } else if (locationpermission != null &&
-          locationpermission.value == LocationPermission.deniedForever) {
+          locationpermission == LocationPermission.deniedForever) {
         showDialogLocationDeniedForever();
       }
     });
