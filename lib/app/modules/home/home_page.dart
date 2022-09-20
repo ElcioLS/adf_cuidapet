@@ -5,6 +5,7 @@ import 'package:adf_cuidapet/app/modules/home/home_controller.dart';
 import 'package:adf_cuidapet/app/services/address/address_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
@@ -43,7 +44,7 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
           ),
           TextButton(
             onPressed: () async {
-              await Modular.to.pushNamed('/address/');
+              controller.goToAddressPage();
             },
             child: const Center(child: Text('Ir para endereço')),
           ),
@@ -59,8 +60,18 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
               child: Text('Buscar endereço'),
             ),
           ),
-          Text(addressEntity?.address ?? 'Nenhun endereço selecionado'),
-          Text(addressEntity?.additional ?? 'Nenhun complememto selecionado'),
+          Observer(
+            builder: (_) {
+              return Text(controller.addressEntity?.address ??
+                  'Nenhun endereço selecionado');
+            },
+          ),
+          Observer(
+            builder: (_) {
+              return Text(controller.addressEntity?.additional ??
+                  'Nenhun complememto selecionado');
+            },
+          ),
         ],
       ),
     );

@@ -1,4 +1,8 @@
 import 'package:adf_cuidapet/app/core/life_cycle/controller_life_cycle.dart';
+import 'package:adf_cuidapet/app/core/ui/widgets/loader.dart';
+import 'package:adf_cuidapet/app/entities/address_entity.dart';
+import 'package:adf_cuidapet/app/services/address/address_service.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
 part 'home_controller.g.dart';
@@ -6,10 +10,33 @@ part 'home_controller.g.dart';
 class HomeController = HomeControllerBase with _$HomeController;
 
 abstract class HomeControllerBase with Store, ControllerLifeCycle {
+  final AddressService _addressService;
+
+  HomeControllerBase({required AddressService addressService})
+      : _addressService = addressService;
+
+  @readonly
+  AddressEntity? _addressEntity;
+
   @override
   Future<void> onReady() async {
-    await _hasRegisteredAddress();
+    Loader.show();
+    await _getAddressSelected();
+    Loader.hide();
   }
 
-  Future<void> _hasRegisteredAddress() async {}
+  @action
+  Future<void> _getAddressSelected() async {
+    _addressEntity ??= await _addressService.getAddressSelected();
+
+    if (_addressEntity == null) {
+      await goToAddressPage();
+    }
+  }
+
+  @action
+  Future<void> goToAddressPage() async {
+    final address = await Modular.to.pushNamed<AddressEntity>('/address/');
+    _addressEntity = address;
+  }
 }
