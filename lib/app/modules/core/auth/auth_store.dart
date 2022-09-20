@@ -1,22 +1,29 @@
 import 'package:adf_cuidapet/app/core/helpers/constants.dart';
 import 'package:adf_cuidapet/app/core/local_storage/local_storage.dart';
 import 'package:adf_cuidapet/app/models/user_model.dart';
+import 'package:adf_cuidapet/app/services/address/address_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobx/mobx.dart';
 
 part 'auth_store.g.dart';
 
-class AuthStore = _AuthStoreBase with _$AuthStore;
+class AuthStore = AuthStoreBase with _$AuthStore;
 
-abstract class _AuthStoreBase with Store {
+abstract class AuthStoreBase with Store {
   final LocalStorage _localStorage;
+  final LocalSecureStorage _localSecureStorage;
+  final AddressService _addressService;
 
   @readonly
   UserModel? _userLogged;
 
-  _AuthStoreBase({
+  AuthStoreBase({
     required LocalStorage localStorage,
-  }) : _localStorage = localStorage;
+    required LocalSecureStorage localSecureStorage,
+    required AddressService addressService,
+  })  : _localStorage = localStorage,
+        _localSecureStorage = localSecureStorage,
+        _addressService = addressService;
 
   @action
   Future<void> loadUserLogged() async {
@@ -40,6 +47,8 @@ abstract class _AuthStoreBase with Store {
   @action
   Future<void> logout() async {
     await _localStorage.clear();
+    await _localSecureStorage.clear();
+    await _addressService.deleteAll();
     _userLogged = UserModel.empty();
   }
 }
