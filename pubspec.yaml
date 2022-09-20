@@ -40,6 +40,11 @@ dependencies:
   path: 1.8.2
   # -------SQLITE-------
 
+  # -------GEO-------
+  geocoding: 2.0.5
+  geolocator: 9.0.1
+  # -------GEO-------
+
 
 dev_dependencies:
   flutter_test:
