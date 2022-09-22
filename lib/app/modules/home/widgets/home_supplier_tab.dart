@@ -207,15 +207,21 @@ class _HomeSupplierGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverGrid(
-          delegate:
-              SliverChildBuilderDelegate(childCount: 10, (context, index) {
-            return _HomeSupplierCardItemWidget();
-          }),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1.1,
-          ),
+        Observer(
+          builder: (_) {
+            return SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                  childCount: controller.listSuppliersByAddress.length,
+                  (context, index) {
+                final supplier = controller.listSuppliersByAddress[index];
+                return _HomeSupplierCardItemWidget(supplier);
+              }),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.1,
+              ),
+            );
+          },
         ),
       ],
     );
@@ -223,7 +229,9 @@ class _HomeSupplierGrid extends StatelessWidget {
 }
 
 class _HomeSupplierCardItemWidget extends StatelessWidget {
-  const _HomeSupplierCardItemWidget();
+  final SupplierNearbyMeModel supplier;
+
+  const _HomeSupplierCardItemWidget(this.supplier);
 
   @override
   Widget build(BuildContext context) {
@@ -243,13 +251,13 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
-                    'Clinica Central ABC',
+                    supplier.name,
                     style: context.textTheme.subtitle2,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const Text(
-                    '1.34 Km de distância',
+                  Text(
+                    '${supplier.distance.toStringAsFixed(2)} Km de distância',
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
@@ -264,15 +272,14 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
             backgroundColor: Colors.grey[200],
           ),
         ),
-        const Positioned(
+        Positioned(
           top: 4,
           left: 0,
           right: 0,
           child: Center(
             child: CircleAvatar(
               radius: 35,
-              backgroundImage: NetworkImage(
-                  'https://s2.glbimg.com/nvjFq8VRjyrpdQqaOeywz-5DFwY=/e.glbimg.com/og/ed/f/original/2021/08/27/captura_de_tela_2021-08-27_as_11.01.15.png'),
+              backgroundImage: NetworkImage(supplier.logo),
             ),
           ),
         ),
