@@ -5,14 +5,14 @@ class SupplierNearbyMeModel {
   final int id;
   final String name;
   final String logo;
-  final double fistance;
+  final double distance;
   final int category;
 
   SupplierNearbyMeModel({
     required this.id,
     required this.name,
     required this.logo,
-    required this.fistance,
+    required this.distance,
     required this.category,
   });
 
@@ -21,7 +21,7 @@ class SupplierNearbyMeModel {
       'id': id,
       'name': name,
       'logo': logo,
-      'fistance': fistance,
+      'distance': distance,
       'category': category,
     };
   }
@@ -31,7 +31,7 @@ class SupplierNearbyMeModel {
       id: map['id'] as int,
       name: map['name'] as String,
       logo: map['logo'] as String,
-      fistance: map['fistance'] as double,
+      distance: map['distance'] as double,
       category: map['category'] as int,
     );
   }
