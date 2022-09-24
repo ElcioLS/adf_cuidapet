@@ -56,7 +56,7 @@ class _SupplierPageState extends State<SupplierPage> {
               valueListenable: sliverCollapsedVN,
               builder: (_, sliverCollapsedValue, child) {
                 return Visibility(
-                  visible: sliverCollapsed,
+                  visible: sliverCollapsedValue,
                   child: const Text(
                     'Petshop da Isabella',
                   ),
